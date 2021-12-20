@@ -1,1 +1,1 @@
-3 % 2
+ numbers[j] = numbers[i];
