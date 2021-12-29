@@ -146,12 +146,6 @@ var countKDifference = function (nums, k) {
 // let item = 'abcdf'
 // console.log(item.replace(item[0],item[0].toUpperCase()))
 
-/*
-2037. Minimum Number of Moves to Seat Everyone
-Input: seats = [3,1,5], students = [2,7,4]
-Output: 4
-*/
-
 function RotateArray(numbers) {
   // console.log(numbers[1]);
   // Write your code here
@@ -172,8 +166,62 @@ function RotateArray(numbers) {
   //   console.log(i)
   // }
   // console.log([ numbers.length-1,...numbers.slice(0, numbers.length-1)])
-
   // console.log(numbers);
 }
 // console.log()
 RotateArray([0, 1, 2, 3, 4, 5]);
+/*
+2037. Minimum Number of Moves to Seat Everyone
+Input: seats = [3,1,5], students = [2,7,4]
+Output: 4
+*/
+var minMovesToSeat = function (seats, students) {
+  const sortedSeat = seats.sort((a, b) => a - b);
+  const sortedStudent = students.sort((a, b) => a - b);
+  let sum = 0;
+  sortedSeat.map((i, j) => (sum += Math.abs(i - sortedStudent[j])));
+  return sum;
+};
+// console.log(minMovesToSeat([2, 2, 6, 6], [1, 3, 2, 6]));
+
+/* 1588. Sum of All Odd Length Subarrays
+Input: arr = [1,4,2,5,3]
+Output: 58
+*/
+var sumOddLengthSubarrays = function (arr) {
+  let sum = 0;
+  let iteration = Math.floor(arr.length / 2);
+  let len = arr.length;
+  let isum = arr.reduce((acc, curr) => acc + curr, 0);
+
+  //
+  for (let i = 1; i <= iteration - 1; i++) {
+    // if (i !== 0 && i <= iteration - 1) {
+    // let m = i === 1 ? ( i) : ( i+1);
+    // console.log({ iteration, len, i, M:(2*i + 1) });
+
+    for (let j = 0; j < arr.length - (2*i); j++) {
+      for (let k = j; k < j + 2 * i + 1; k++) {
+        sum += arr[k % len];
+        // console.log("arr[k]=" + arr[k % len]);
+      }
+      // console.log("sum:" + sum);
+    }
+    // }
+  }
+
+  return len === 1 ? isum : len % 2 === 1 ? (sum += isum * 2) : (sum += isum);
+};
+
+// console.log(sumOddLengthSubarrays([6, 9, 14, 5, 3, 8, 7, 12, 13, 1]));
+
+/*
+1662. Check If Two String Arrays are Equivalent
+Input: word1 = ["ab", "c"], word2 = ["a", "bc"]
+Output: true
+*/
+var arrayStringsAreEqual = function (word1, word2) {
+
+  return word1.join("") === word2.join("")
+};
+console.log(arrayStringsAreEqual(["abc", "d", "defg"], ["abcddefg"]));

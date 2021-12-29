@@ -154,8 +154,8 @@ int count_occurrences(int arr[], int n, int x)
 
 int main()
 {
-    // int nums[] = {7, 12, 30, 15, 19, 32, 56, 70};
-    int nums[] = {2, 2, 4, 6, 7, 2, -2};
+    int nums[] = {7, 12, 30, 15, 19, 32, 56, 70};
+    // int nums[] = {2, 2, 4, 6, 7, 2, -2};
 
     int numberOfElements = sizeof(nums) / sizeof(nums[0]);
 

@@ -173,9 +173,11 @@ var numIdenticalPairs = function (nums) {
   let sum = 0;
   for (let i = 0; i < nums.length; i++) {
     result[nums[i]] = (result[nums[i]] || 0) + 1;
+    // console.log({result})
   }
 
   finalRes = Object.keys(result).map((key) => result[key]);
+  // console.log(finalRes)
   finalRes.map((item) => {
     if (item > 1) {
       sum += (item * (item - 1)) / 2;
@@ -183,16 +185,17 @@ var numIdenticalPairs = function (nums) {
   });
   return sum;
 };
-function numIdenticalPair(nums) {
-  // O(n)
-  const map = nums.reduce((m, n) => m.set(n, (m.get(n) || 0) + 1), new Map());
-  return [...map.values()].reduce((num, n) => num + (n * (n - 1)) / 2, 0);
-}
+// function numIdenticalPair(nums) {
+//   // O(n)
+//   const map = nums.reduce((m, n) => m.set(n, (m.get(n) || 0) + 1), new Map());
+//   return [...map.values()].reduce((num, n) => num + (n * (n - 1)) / 2, 0);
+// }
+
 // const map = [1, 1, 1, 1, 2, 3, 4, 3].reduce(
 //   (m, n) => console.log(m.set(n, (m.get(n) || 0) + 1)),
 //   new Map()
 // );
-// console.log(numIdenticalPair([1, 1, 1,1, 2, 3, 4,3]));
+console.log(numIdenticalPairs([1, 1, 1,1, 2, 3, 4,3]));
 
 // const array = ["a", "a", "b"];
 // const result = [];
