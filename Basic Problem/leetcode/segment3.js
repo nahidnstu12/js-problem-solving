@@ -1,8 +1,29 @@
 // 1.Find the largest element of a given array of integers
 
 const find_largest = (nums, n) => {
-  return Math.max(...nums);
+  // return Math.max(...nums);
+
+  // manual way
+  let temp = nums[0];
+  for (let i = 0; i < nums.length; i++) {
+    if (temp < nums[i]) {
+      temp = nums[i];
+    }
+  }
+  return temp;
 };
+
+// find largest number given three number
+const find_largest_one = (a, b, c) => {
+  if (a > b && a > c) {
+    return a;
+  } else if (b > c) {
+    return b;
+  } else {
+    return c;
+  }
+};
+// console.log(find_largest_one(100, 40, 30));
 const three_largest = (nums) => {
   let first, second, third;
   first = second = third = nums[0];
@@ -97,7 +118,42 @@ function checkPalindrome(string) {
     ? "It is a palindrome"
     : "It is not a palindrome";
 }
-// console.log(checkPalindrome("abbA"))
+// console.log(checkPalindrome("abbA"));
+
+// chkPrime number
+const ckPrime = (val) => {
+  let flag = 0;
+  for (let i = 2; i < val; i++) {
+    if (val % i == 0) {
+      flag = 1;
+      break;
+    }
+  }
+  return flag === 0 ? `${val} is prime number` : `${val} is not prime number`;
+};
+// console.log(ckPrime(15))
+// prime number lists
+const ckPrimeLists = ( num) => {
+  
+  // const lowerNumber = parseInt(prompt("Enter lower number: "));
+  // const higherNumber = parseInt(prompt("Enter higher number: "));
+  // console.log({lowerNumber,higherNumber})
+  for (let rang = 1; rang <= num; rang++) {
+    let flag = 0;
+    for (let i = 2; i < rang; i++) {
+      if (rang % i === 0) {
+        flag = 1;
+        break;
+      }
+    }
+    if(rang > 1 && flag === 0) {
+      console.log(rang)
+    }
+  }
+  // return flag === 0 ? `${val} is prime number` : `${val} is not prime number`;
+};
+ckPrimeLists(11);
+// 
 //9.Merge an array of size n into another array of size m+n
 const merge = (arr1, arr2) => {
   const arr = arr1.filter((i) => i !== "NA");
@@ -113,14 +169,17 @@ const leftRotateByN = (nums, n) => {
 const rightRotateByN = (nums, n) => {
   // return [...nums.slice(1,nums.length), nums[0]]
   return [
-    ...nums.slice(nums.length - 3, nums.length),
-    ...nums.slice(0, nums.length - 3),
+    ...nums.slice(nums.length - n, nums.length),
+    ...nums.slice(0, nums.length - n),
   ];
 };
+
 //12. insert in position 3 => 30
 const insert = (nums, pos, val) => {
   return [...nums.slice(0, pos), val, ...nums.slice(pos, nums.length)];
 };
+// console.log(insert([12, 1, 1, 14, 4, 2], 2, 40));
+
 // 13. insert obj
 const insertObj = (objArr, obj) => {
   // normal insert
@@ -161,6 +220,7 @@ var runningSum = function (nums) {
   let sum = 0;
   return nums.map((i) => (sum += i));
 };
+// console.log(runningSum([1, 2, 3, 4]));
 /*
 1672. Richest Customer Wealth
 Input: accounts = [[1,2,3],[3,2,1]]
@@ -197,7 +257,7 @@ var numIdenticalPairs = function (nums) {
   return { count, result, uniq: [...uniq] };
 };
 
-console.log(numIdenticalPairs([1, 2, 5, 1, 1, 5, 5]));
+// console.log(numIdenticalPairs([1, 2, 5, 1, 1, 5, 5]));
 //
 
 //
