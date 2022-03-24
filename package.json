@@ -1,0 +1,23 @@
+{
+  "name": "js-problem-solving",
+  "version": "1.0.0",
+  "description": "JS Practise",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nahidnstu12/js-problem-solving.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nahidnstu12/js-problem-solving/issues"
+  },
+  "homepage": "https://github.com/nahidnstu12/js-problem-solving#readme",
+  "dependencies": {
+    "axios": "^0.26.0"
+  }
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .content {
+      padding: 1rem;
+      margin: 1rem auto;
+      background-color: #efefef;
+    }
+    h1 {
+      color: rgb(11, 66, 54);
+    }
+    p {
+      display: none;
+      width: 100%;
+      transition: all 1s ease-in;
+    }
+  </style>
+  <body>
+    <div class="content">
+      <h1>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex pariatur
+        tempore ipsum non consequuntur fuga.
+      </h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur,
+        expedita rem error quis deleniti, iure aliquid doloribus praesentium
+        quasi enim dicta! Cum autem explicabo tempora eveniet consequatur!
+        Maiores beatae tenetur veritatis modi laboriosam, veniam autem iste
+        saepe eos officia repellat, similique ducimus. Quo facere nobis
+        reiciendis illum delectus beatae? Praesentium commodi fugiat unde
+        inventore impedit blanditiis soluta natus excepturi? Ullam consequatur
+        deleniti eligendi ut atque id. Est praesentium aut, perspiciatis sed,
+        voluptatum molestiae distinctio ut perferendis esse ea voluptas
+        consequatur omnis quod expedita possimus, adipisci dolores in.
+        Temporibus earum aut doloremque nostrum rerum laboriosam impedit
+        consequatur expedita at facere qui mollitia, dolorem repellat quam
+        laudantium quis exercitationem alias rem aspernatur voluptatum! Aliquam
+        in ab praesentium, illum veritatis alias, optio veniam eaque architecto
+        consectetur suscipit inventore a, est delectus! Ratione, odio eaque ab
+        accusamus cum totam voluptas unde incidunt, dignissimos commodi deleniti
+        adipisci officia? Iusto cum molestias, veniam pariatur molestiae cumque.
+      </p>
+    </div>
+    <script>
+      const content = document.querySelector(".content");
+      const heading = document.querySelector("h1");
+      const paragrap = document.querySelector("p");
+      let para = paragrap.innerText;
+      let isClicked = false;
+
+      //The paragraph should be partially revealed when hovering over the heading
+      content.addEventListener(
+        "mousemove",
+        () => {
+          let p = paragrap.innerText;
+          //   console.log( para.length)
+          paragrap.style.display = "block";
+          paragrap.innerHTML = isClicked ? p : p.substr(0, 400);
+        },
+        false
+      );
+      // the paragrap are hidden, if not clicked
+      content.addEventListener(
+        "mouseout",
+        () => {
+          let p = paragrap.innerText;
+          isClicked
+            ? (paragrap.style.display = "block")
+            : (paragrap.style.display = "none");
+        },
+        false
+      );
+      // clicked heading, fully revealed paragraph
+      heading.addEventListener(
+        "click",
+        () => {
+          // console.log( p.length)
+          paragrap.style.display = "block";
+          paragrap.innerHTML = para;
+          isClicked = true;
+        },
+        false
+      );
+    </script>
+  </body>
+</html>

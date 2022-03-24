@@ -107,10 +107,9 @@ for (let student of students) {
  */
 
 const studentsObj = students.reduce((acc, cur) => {
-  acc[cur.id] = {...cur}
-  return acc
+  acc[cur.id] = { ...cur };
+  return acc;
 }, {});
-
 
 // create a student
 const newStudentObj = {
@@ -118,29 +117,72 @@ const newStudentObj = {
   name: "Asif Mahmud",
   email: "asif@mail.com",
 };
-students.push(newStudentObj)
-studentsObj[newStudentObj.id] = {...newStudentObj}
+students.push(newStudentObj);
+studentsObj[newStudentObj.id] = { ...newStudentObj };
 // console.log(studentsObj);
 // console.log(students);
 
 // update student
 const updateId = "0876012c-0229-4ef1-83e4-10abcb4a2709";
 const updateStudent = {
-  name:"Rubel Hossain",
+  name: "Rubel Hossain",
   // email:"hossain@mail.com"
-}
-studentsObj[updateId] = {...studentsObj[updateId],...updateStudent}
+};
+studentsObj[updateId] = { ...studentsObj[updateId], ...updateStudent };
 
 // delete student
 // delete studentsObj[updateId];
 
-
 // filter student
 // tudentsObj[updateId].email;
-for(let i in studentsObj){
-// console.log("Your eamil is: "+studentsObj[i].email);
+for (let i in studentsObj) {
+  // console.log("Your eamil is: "+studentsObj[i].email);
 }
 // console.log(studentsObj);
 
 // converting obj to array
- Object.values(studentsObj).map(item => console.log(item.name))
+//  Object.values(studentsObj).map(item => console.log(item.name))
+
+// axios operation
+const axios = require("axios").default;
+const url = "http://studentinfopopy.herokuapp.com/api/courses";
+let courses = {};
+async function getData() {
+  const { data } = await axios.get(url);
+  // console.log(data.slice(0,5));
+  const result = data.slice(0, 3).reduce((acc, cur) => {
+    acc[cur.course_code] = { ...cur };
+    return acc;
+  }, {});
+  return result;
+}
+// async function putData(updateData) {
+//   const { data } = await axios.put(url + "/CSTEab8d51",updateData);
+//   // console.log(data.slice(0,5));
+//  return data
+// }
+
+// async function getSingleData() {
+//   const { data } = await axios.get(url + "/CSTEab8d51");
+
+//   return data;
+// }
+const updateData2 = {
+  course_title: "Software Engineering",
+  yt: "Y3-T1",
+  course_description: "Software Engineering Description Allowence.lorem10",
+};
+
+getData()
+  .then((res) => (courses = res))
+  .catch((err) => console.log(err));
+
+// putData(updateData2)
+//   .then((res) => console.log(res))
+//   .catch((err) => console.log(err));
+
+// console.log(courses);
+
+// getSingleData()
+//   .then((res) => console.log(res))
+//   .catch((err) => console.log(err));

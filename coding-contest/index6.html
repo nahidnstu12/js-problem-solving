@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .colors-container {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+      }
+      select {
+        width: 150px;
+        height: 50px;
+      }
+      .object {
+        width: 150px;
+        height: 150px;
+        background-color: #222;
+        margin: 2rem auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Color Picker (5 color palaet)</h1>
+    <div class="colors-container">
+      <div>
+        <h3>Solid Colors</h3>
+        <select name="" id="solid-colors" onchange="getSolidColor()">
+          <option value="#333">Black</option>
+          <option value="#ed36ed">Pink</option>
+          <option value="#2b80d1">Sea Green</option>
+          <option value="#29cc3a">Light Green</option>
+          <option value="#8ab9dc">Light Sky Blue</option>
+          <option value="#d4d71a">Masterd</option>
+        </select>
+      </div>
+      <div>
+        <h3>Hovered Colors</h3>
+        <select name="" id="hover-colors" onchange="getHoveredColor()">
+          <option value="#333">Black</option>
+          <option value="#ed36ed">Pink</option>
+          <option value="#2b80d1">Sea Green</option>
+          <option value="#29cc3a">Light Green</option>
+          <option value="#8ab9dc">Light Sky Blue</option>
+          <option value="#d4d71a">Masterd</option>
+        </select>
+      </div>
+    </div>
+
+    <br />
+    <div class="object"></div>
+
+    <script>
+      const obj = document.querySelector(".object");
+      function getSolidColor() {
+        solid = document.getElementById("solid-colors").value;
+        obj.style.background = solid;
+      }
+
+      function getHoveredColor() {
+        hover = document.getElementById("hover-colors").value;
+        obj.addEventListener("mouseenter", () => {
+          obj.style.background = hover;
+        });
+        obj.addEventListener("mouseleave", () => {
+          obj.style.background = solid;
+        });
+      }
+
+      console.log(strUser);
+    </script>
+  </body>
+</html>

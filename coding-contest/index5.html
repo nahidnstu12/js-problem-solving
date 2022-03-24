@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .roulette_center:hover {
+      transform: scale(1.01);
+    }
+    .roulette_wheel {
+      transition: ease-in-out 3s transform;
+    }
+  </style>
+  <body>
+    <div style="z-index: 0; position: relative">
+      <span
+        style="
+          position: absolute;
+          top: 0px;
+          left: 360px;
+          font-weight: 700;
+          font-size: 24px;
+        "
+        id="score"
+        >&nbsp;</span
+      >
+      <img
+        class="roulette_wheel"
+        src="https://www.dropbox.com/s/6kp3fmtp72aj3vy/wellness-wheel.png?raw=1"
+      />
+      <img
+        class="roulette_center"
+        style="position: absolute; left: 2px; cursor: pointer"
+        src="https://www.dropbox.com/s/52x8iyb1nvkjm0w/wheelCenter.png?raw=1"
+        onclick="roulette_spin(this)"
+        onfocus="transform()"
+      />
+      <div
+        style="
+          position: absolute;
+          top: 30px;
+          left: 350px;
+          background-color: red;
+          width: 1px;
+          height: 60px;
+        "
+      ></div>
+    </div>
+  </body>
+  <script>
+    var force = 0;
+    var angle = 0;
+    var rota = 1;
+    var inertia = 0.985;
+    var minForce = 15;
+    var randForce = 15;
+    var rouletteElem = document.getElementsByClassName("roulette_wheel")[0];
+    var scoreElem = document.getElementById("score");
+
+    var values = [
+      "Spititual",
+      "Emotional",
+      "Intellectual",
+      "Physical",
+      "Social",
+      "Environmental",
+      "Financial",
+    ].reverse();
+
+    function roulette_spin(btn) {
+      var additionalRotation = Math.floor(Math.random() * values.length) * 360;
+      angle += additionalRotation;
+      rouletteElem.style.transform = "rotate(" + angle + "deg)";
+    }
+  </script>
+</html>

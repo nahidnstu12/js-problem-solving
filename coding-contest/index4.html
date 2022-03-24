@@ -1,0 +1,310 @@
+<html>
+  <head> </head>
+  <style>
+    .roulette_center {
+      position: absolute;
+      top: 255px;
+      left: 258px;
+      cursor: pointer;
+    }
+
+    .roulette_center:hover {
+      transform: scale(1.01);
+    }
+
+    .roulette_wheel {
+      touch-action: auto;
+      pointer-events: painted;
+    }
+
+    .single-input-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .single-input-wrapper > label {
+      width: 150px;
+    }
+
+    .single-input-wrapper > input {
+      width: 150px;
+    }
+
+    #score {
+      position: absolute;
+      top: 0px;
+      left: 360px;
+      font-weight: 700;
+      font-size: 24px;
+    }
+
+    #indicator {
+      position: absolute;
+      top: 30px;
+      left: 350px;
+      background-color: red;
+      width: 1px;
+      height: 60px;
+    }
+    #all-input-wrappers {
+      z-index: 10;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      opacity: 0.2;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      transition: opacity 0.2s;
+    }
+
+    #all-input-wrappers:hover {
+      opacity: 0.8;
+    }
+  </style>
+  <body>
+    <div style="z-index: 0; position: relative">
+      <div id="all-input-wrappers"></div>
+      <span id="score">&nbsp;</span>
+      <img
+        class="roulette_wheel"
+        src="https://www.dropbox.com/s/6kp3fmtp72aj3vy/wellness-wheel.png?raw=1"
+      />
+      <img
+        class="roulette_center"
+        src="https://www.dropbox.com/s/52x8iyb1nvkjm0w/wheelCenter.png?raw=1"
+        onfocus="transform()"
+      />
+      <div id="indicator"></div>
+    </div>
+    <script>
+      (function () {
+        var values = [
+          "Financial",
+          "Environmental",
+          "Social",
+          "Physical",
+          "Intellectual",
+          "Emotional",
+          "Spititual",
+        ];
+        var speed = 0;
+        // should init angle so that the cursor is at the center of the desired value,
+        // this is just to test the offset is right
+        var angle = getAngleFor("Intellectual");
+        // how much of the speed is kept at each update step (0 < i < 1, the bigger the longer the wheel spins)
+        var inertia = 0.988;
+        var minSpeed = 15;
+        // how much randomness in initial push speed
+        var randRange = 15;
+        // strongest absolute force that an attractor can exerce (is squashed to before scaling is applied)
+        var maxAttractionForce = 0.5;
+        // scale attraction force
+        var attractionForceFactor = 0.02;
+        var rouletteElem = document.getElementsByClassName("roulette_wheel")[0];
+        var scoreElem = document.getElementById("score");
+        // offset the display angle so that angle 0 is at the edge of the first slice
+        var offset = 26.42;
+        var currentAnimationFrame = null;
+        var clickedSliceIndex = -1;
+        var estimatedSliceIndex = -1;
+        var totalAngle = 0;
+
+        function addParamInput(name, value, min, max, step, handler) {
+          var id = name + "-input-id";
+          var wrapper = document.createElement("div");
+          wrapper.classList.add("single-input-wrapper");
+          var label = document.createElement("label");
+          label.setAttribute("for", id);
+          label.innerHTML = name;
+          var input = document.createElement("input");
+          input.setAttribute("type", "range");
+          input.setAttribute("min", "" + min);
+          input.setAttribute("max", "" + max);
+          input.setAttribute("step", "" + step);
+          input.setAttribute("value", "" + value);
+          input.addEventListener("change", handler);
+          var meter = document.createElement("span");
+          meter.classList.add("input-meter");
+          meter.innerHTML = value;
+          wrapper.appendChild(label);
+          wrapper.appendChild(input);
+          wrapper.appendChild(meter);
+          document.getElementById("all-input-wrappers").appendChild(wrapper);
+        }
+
+        function updateInputMeter(input) {
+          input.parentElement.getElementsByClassName(
+            "input-meter"
+          )[0].innerHTML = input.value;
+        }
+
+        function roulette_spin(evt) {
+          evt.stopPropagation();
+          clickedSliceIndex = -1;
+          totalAngle = 0;
+          // erase score
+          scoreElem.innerHTML = "";
+          // set initial speed randomly
+          speed = Math.floor(Math.random() * randRange) + minSpeed;
+          // console.log('initial speed', speed);
+          // probably far from accurate but it kind of works, attractor
+          // completely ignored because when spinning fast it cost speed as much
+          // as it adds, and after it won't matter
+          // since we will be forcing the attractor to where we want to stop
+          var estimatedSpin = speed / (1 - inertia);
+          // console.log('estimated total spin approximation', estimatedSpin);
+          estimatedSliceIndex = getSliceIndex((angle + estimatedSpin) % 360);
+          // console.log('estimated stopping slice', values[estimatedSliceIndex]);
+          if (currentAnimationFrame) {
+            cancelAnimationFrame(currentAnimationFrame);
+          }
+          currentAnimationFrame = requestAnimationFrame(doAnimation);
+        }
+
+        function getSliceIndex(angle) {
+          return Math.floor((angle / 360) * values.length);
+        }
+
+        function getCircularDist(a, b) {
+          // assuming both a and b are positive angles 0 <= angle <= 360
+          // find shortest oriented distance
+          // example: if a is 350 degrees and b is 10 degrees what's the actuals angular dist from a to b
+          // naive implementation would be b - a which gives - 340 => wrong, it only takes
+          // 20 degrees to rotate from 350 to 10 => b - (a - 360)
+          // conversely if a is 300 and b is 250 the shortest distance is
+          // the other way around => b - a = -50 degrees
+          var d1 = b - a;
+          var d2 = b - (a - 360);
+          return Math.abs(d1) >= Math.abs(d2) ? d2 : d1;
+        }
+
+        function setRouletteAngle(angle) {
+          rouletteElem.style.transform = "rotate(" + (offset + angle) + "deg)";
+        }
+
+        function getAngleFor(value) {
+          return getAngleForIndex(values.indexOf(value));
+        }
+
+        function getAngleForIndex(sliceIndex) {
+          return (sliceIndex + 0.5) * (360 / values.length);
+        }
+
+        function handleRouletteClick(evt) {
+          // coordinate of the center of the wheel
+          var centerX = rouletteElem.offsetWidth / 2;
+          var centerY = rouletteElem.offsetHeight / 2;
+          // console.log('centerX', centerX, 'centerY',centerY);
+          // roulette's parent bounding rect
+          var rect = evt.target.parentElement.getBoundingClientRect();
+          // coordinates of the click in roulette's parent coordinates
+          var clickX = evt.clientX - rect.x;
+          var clickY = evt.clientY - rect.y;
+          // resulting coordinates relative to the center of the wheel
+          var x = clickX - centerX;
+          var y = clickY - centerY;
+          // console.log('x', x, 'y', y);
+          var norm = Math.sqrt(x * x + y * y);
+          // -pi < rad < pi
+          var rad = Math.atan2(x, y);
+          var deg = (rad * 180) / Math.PI;
+          // 0 <= clickedAngle < 360 starting from the first slice
+          var clickedAngle = ((deg < 0 ? deg + 360 : deg) + angle + 180) % 360;
+          clickedSliceIndex = Math.floor((clickedAngle / 360) * values.length);
+          scoreElem.style.color = "lightgrey";
+          scoreElem.innerHTML = "clicked " + values[clickedSliceIndex];
+          // outside of an animation started with the center button it will make the wheel spin to target
+          if (!currentAnimationFrame) {
+            // assume wheel is not mmoving so the estimated slice is the slice at the current angle
+            estimatedSliceIndex = getSliceIndex(angle);
+            currentAnimationFrame = requestAnimationFrame(doAnimation);
+          }
+          var estimatedAngle = getAngleForIndex(estimatedSliceIndex);
+          var targetFinalAngle = getAngleForIndex(clickedSliceIndex);
+          var spinError = getCircularDist(estimatedAngle, targetFinalAngle);
+          var speedCorrection = spinError * (1 - inertia);
+          speed += speedCorrection;
+        }
+
+        function doAnimation() {
+          // new angle is previous angle + speed modulo 360 (so that it stays between 0 and 360)
+          totalAngle += speed;
+          angle = (angle + speed) % 360;
+          // decay speed according to inertia parameter
+          speed = speed - (1 - inertia) * speed;
+          // add attractor force: inverse of circular oriented dist to the closest slice center * some factor
+          var sliceIndex =
+            clickedSliceIndex !== -1 ? clickedSliceIndex : getSliceIndex(angle);
+
+          var target = getAngleForIndex(sliceIndex);
+          var orientedDist = getCircularDist(angle, target);
+
+          // protect against infinity (division by 0 or close to 0)
+          var inverseOrientedDistAmplitude =
+            orientedDist === 0
+              ? maxAttractionForce
+              : Math.min(1 / Math.abs(orientedDist), maxAttractionForce);
+          var finalAttractionForce =
+            Math.sign(orientedDist) *
+            inverseOrientedDistAmplitude *
+            attractionForceFactor;
+
+          speed = speed + finalAttractionForce;
+
+          setRouletteAngle(angle);
+          // stop animation if speed is low and close to attraction point
+          if (speed < 0.01 && Math.abs(orientedDist) < 0.05) {
+            // console.log('total spin', totalAngle);
+            scoreElem.style.color = "black";
+            scoreElem.innerHTML = values[getSliceIndex(angle)];
+            currentAnimationFrame = null;
+            return;
+          }
+          currentAnimationFrame = requestAnimationFrame(doAnimation);
+        }
+
+        setRouletteAngle(angle);
+        document
+          .getElementsByClassName("roulette_center")[0]
+          .addEventListener("click", roulette_spin);
+        rouletteElem.parentElement.addEventListener(
+          "click",
+          handleRouletteClick
+        );
+        addParamInput("minSpeed", 15, 0, 60, 0.5, function (evt) {
+          var rangeInput = evt.target;
+          minSpeed = parseFloat(rangeInput.value);
+          updateInputMeter(rangeInput);
+        });
+
+        addParamInput("inertia", 0.988, 0.9, 0.999, 0.001, function (evt) {
+          var rangeInput = evt.target;
+          inertia = parseFloat(rangeInput.value);
+          updateInputMeter(rangeInput);
+        });
+
+        addParamInput(
+          "attractionForceFactor",
+          0.02,
+          0,
+          0.1,
+          0.001,
+          function (evt) {
+            var rangeInput = evt.target;
+            attractionForceFactor = parseFloat(rangeInput.value);
+            updateInputMeter(rangeInput);
+          }
+        );
+
+        addParamInput("maxAttractionForce", 0.5, 0, 1.5, 0.01, function (evt) {
+          var rangeInput = evt.target;
+          maxAttractionForce = parseFloat(rangeInput.value);
+          updateInputMeter(rangeInput);
+        });
+      })();
+    </script>
+  </body>
+</html>
+
+<!-- end snippet -->

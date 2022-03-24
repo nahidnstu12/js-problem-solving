@@ -1,0 +1,46 @@
+body {
+  margin: 0;
+}
+
+.container {
+  background-color: #333;
+  padding: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+#div1 {
+  width: 75px;
+  height: 75px;
+  order: 1;
+}
+
+#div2 {
+  width: 100px;
+  height: 100px;
+  order: 2;
+}
+
+#div3 {
+  width: 125px;
+  height: 125px;
+  order: 3;
+}
+
+.draggable {
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid black;
+  cursor: move;
+  margin: 1rem auto;
+}
+
+.draggable.dragging {
+  opacity: 0.5;
+}
+
+.btn {
+  margin-top: 12px;
+  display: none;
+}
