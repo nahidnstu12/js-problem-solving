@@ -4,19 +4,41 @@
 
 // Sum & Average
 const arr = [1, 2, 3, 4, 5];
-const sum = arr.reduce((acc, cur)=> acc+cur)
-console.log({sum})
+const sum = arr.reduce((acc, cur) => acc + cur);
+const average = arr.reduce((acc, cur, index, array) => {
+  acc += cur;
+  console.log({ acc, cur, index, array: array.length });
+  if (index === array.length - 1) {
+    console.log("hi");
+    return acc / array.length;
+  }
+  // return acc
+});
+// console.log({sum, average})
 
 // array flatten (7.4)
 const nestedArr = [[1, 2], 3, [4, 5]];
+const flatReduce = nestedArr.reduce((acc, cur) => {
+  acc.push(cur);
+  return acc
+}, []);
+console.log(flatReduce)
 
 // flatMap(7.5)
 const flatMap = arr.flatMap((x) => [x, x * 2]);
+const flatMapReduce = nestedArr.reduce((acc, cur) => {
+  acc.push(cur);
+}, []);
 
 // frequency checker
 const votes = ["JAVA", "JS", "PHP", "PHP", "JS", "PHP"];
+// {JS: 2}
+
 
 // implement OWN reduce
+const myReduce = () => {
+  
+}
 
 // reduce right flatten
 const arr2 = [
@@ -139,9 +161,19 @@ const discountLists = { oc1: 5, oc2: 10, oc3: 7, oc4: 0, oc5: 15 }; //percentage
 
 //chain promise
 
-
 //contact lists
-const contacts = [{name:"asd", phone: "12312356"}, {name:"xsd", phone: "12312356"}, {name:"rty", phone: "12312356"}, {name:"apkrsd", phone: "12312356"}, {name:"awe", phone: "12312356"}, {name:"res", phone: "12312356"},{name:"xxx", phone: "12312356"},{name:"asq", phone: "12312356"},{name:"rre", phone: "12312356"},{name:"xsw", phone: "12312356"}]
+const contacts = [
+  { name: "asd", phone: "12312356" },
+  { name: "xsd", phone: "12312356" },
+  { name: "rty", phone: "12312356" },
+  { name: "apkrsd", phone: "12312356" },
+  { name: "awe", phone: "12312356" },
+  { name: "res", phone: "12312356" },
+  { name: "xxx", phone: "12312356" },
+  { name: "asq", phone: "12312356" },
+  { name: "rre", phone: "12312356" },
+  { name: "xsw", phone: "12312356" },
+];
 
 //remove duplicates
-const duplicateArr = ["nishat", "nahid", "nabilla", "nishat", "nahid"]
+const duplicateArr = ["nishat", "nahid", "nabilla", "nishat", "nahid"];
