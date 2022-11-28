@@ -52,6 +52,7 @@ const find_greater_elements = (nums) => {
 
   return nums2.slice(0, nums2.length - 2);
 };
+// console.log("3=> " ,find_greater_elements([3,4,7,2,5,6,1,2]))
 //4.Find the next greater element of every element of a given array of integers
 const next_greater = (nums) => {
   let temp = nums[0];
@@ -152,7 +153,7 @@ const ckPrimeLists = ( num) => {
   }
   // return flag === 0 ? `${val} is prime number` : `${val} is not prime number`;
 };
-ckPrimeLists(11);
+// ckPrimeLists(11);
 // 
 //9.Merge an array of size n into another array of size m+n
 const merge = (arr1, arr2) => {
@@ -164,6 +165,7 @@ const leftRotateByN = (nums, n) => {
   // return [...nums.slice(1,nums.length), nums[0]]
   return [...nums.slice(n, nums.length), ...nums.slice(0, n)];
 };
+// console.log("leftRotateByN=>", leftRotateByN([12,14,15,11,11,8,9],2));
 
 // 11.Function to right rotate arr[] of size n by d
 const rightRotateByN = (nums, n) => {
@@ -173,6 +175,7 @@ const rightRotateByN = (nums, n) => {
     ...nums.slice(0, nums.length - n),
   ];
 };
+// console.log("rightRotateByN=>", rightRotateByN([12, 14, 15, 11, 11, 8, 9], 2));
 
 //12. insert in position 3 => 30
 const insert = (nums, pos, val) => {

@@ -64,7 +64,7 @@ const updateData = {
 };
 const updatedIndex = students.findIndex((student) => student.id === idToUpdate);
 students[updatedIndex] = { ...students[updatedIndex], ...updateData };
-// console.log(students);
+console.log(students);
 // console.timeEnd("update");
 
 // delete student
@@ -173,9 +173,9 @@ const updateData2 = {
   course_description: "Software Engineering Description Allowence.lorem10",
 };
 
-getData()
-  .then((res) => (courses = res))
-  .catch((err) => console.log(err));
+// getData()
+//   .then((res) => (courses = res))
+//   .catch((err) => console.log(err));
 
 // putData(updateData2)
 //   .then((res) => console.log(res))
