@@ -7,7 +7,7 @@ const arr = [1, 2, 3, 4, 5];
 const sum = arr.reduce((acc, cur) => acc + cur);
 const average = arr.reduce((acc, cur, index, array) => {
   acc += cur;
-  console.log({ acc, cur, index, array: array.length });
+  // console.log({ acc, cur, index, array: array.length });
   if (index === array.length - 1) {
     console.log("hi");
     return acc / array.length;
@@ -22,22 +22,30 @@ const flatReduce = nestedArr.reduce((acc, cur) => {
   acc.push(cur);
   return acc
 }, []);
-console.log(flatReduce)
+// console.log(flatReduce)
 
 // flatMap(7.5)
 const flatMap = arr.flatMap((x) => [x, x * 2]);
-const flatMapReduce = nestedArr.reduce((acc, cur) => {
-  acc.push(cur);
-}, []);
+// const flatMapReduce = nestedArr.reduce((acc, cur) => {
+//   acc.push(cur);
+// }, []);
 
 // frequency checker
 const votes = ["JAVA", "JS", "PHP", "PHP", "JS", "PHP"];
 // {JS: 2}
-
+const votesObjCount = votes.reduce((acc, cur)=> {
+  if(acc[cur]){
+    acc[cur]++
+  }else{
+    acc[cur] = 1 
+  }
+  return acc
+}, {})
+// console.log(votesObjCount);
 
 // implement OWN reduce
 const myReduce = () => {
-  
+
 }
 
 // reduce right flatten
@@ -46,6 +54,10 @@ const arr2 = [
   [3, 4],
   [5, 6],
 ];
+
+const reduceRightArr = arr2.reduceRight((acc, cur)=> {
+
+})
 
 //reduce array into single object
 const products = [
@@ -58,6 +70,22 @@ const products = [
 ];
 // JS COOKBOOK: {price: 1400, quantity: 3}
 // total price
+
+const invoiceList = products.reduce((acc, cur)=> {
+  if(acc[cur]){
+    acc[cur].price+=cur.price
+    acc[cur].quantity += cur.quantity
+  }else{
+    acc[cur] = {
+      ...acc[cur],
+      price: cur.price,
+      quantity: 1
+    }
+  }
+  return acc
+})
+
+console.log({invoiceList})
 
 //Matrix Sum (Horizontal, vertical, flat sum)
 const matrix = [
