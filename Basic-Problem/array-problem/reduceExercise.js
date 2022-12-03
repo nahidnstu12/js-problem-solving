@@ -2,51 +2,56 @@
  * Reduce Exercise
  */
 
-// Sum & Average
+// Sum & Average  //(DONE)
 const arr = [1, 2, 3, 4, 5];
 const sum = arr.reduce((acc, cur) => acc + cur);
 const average = arr.reduce((acc, cur, index, array) => {
   acc += cur;
-  // console.log({ acc, cur, index, array: array.length });
   if (index === array.length - 1) {
-    console.log("hi");
     return acc / array.length;
   }
-  // return acc
+
+  return acc;
 });
 // console.log({sum, average})
 
-// array flatten (7.4)
+// array flatten (7.4) (DONE)
 const nestedArr = [[1, 2], 3, [4, 5]];
 const flatReduce = nestedArr.reduce((acc, cur) => {
-  acc.push(cur);
-  return acc
+  return acc.concat(cur);
 }, []);
-// console.log(flatReduce)
 
 // flatMap(7.5)
 const flatMap = arr.flatMap((x) => [x, x * 2]);
-// const flatMapReduce = nestedArr.reduce((acc, cur) => {
-//   acc.push(cur);
-// }, []);
-
-// frequency checker
+const flatMapReduce = nestedArr.reduce((acc, cur) => {
+  console.log({acc, cur, item: cur*2});
+  acc.concat(cur)
+}, []);
+console.log({flatMapReduce, flatMap});
+// frequency checker (DONE)
 const votes = ["JAVA", "JS", "PHP", "PHP", "JS", "PHP"];
 // {JS: 2}
-const votesObjCount = votes.reduce((acc, cur)=> {
-  if(acc[cur]){
-    acc[cur]++
-  }else{
-    acc[cur] = 1 
+const votesObjCount = votes.reduce((acc, cur) => {
+  if (acc[cur]) {
+    acc[cur]++;
+  } else {
+    acc[cur] = 1;
   }
-  return acc
-}, {})
+  return acc;
+}, {});
 // console.log(votesObjCount);
 
 // implement OWN reduce
-const myReduce = () => {
+const myReduce = (arr, cb, init) => {
+  let acc
+  for(let i =0; i<=arr.length; i++){
+    acc+=cb(arr[i], i, arr)
+  }
+  return acc
+};
+const mySum = myReduce(arr, ())
+console.log(m);
 
-}
 
 // reduce right flatten
 const arr2 = [
@@ -55,37 +60,41 @@ const arr2 = [
   [5, 6],
 ];
 
-const reduceRightArr = arr2.reduceRight((acc, cur)=> {
+const reduceRightArr = arr2.reduceRight((acc, cur) => {});
 
-})
-
-//reduce array into single object
+//reduce array into single object (DONE)
 const products = [
   { name: "JS COOKBOOK", price: 350 },
   { name: "PHP COOKBOOK", price: 150 },
   { name: "JS COOKBOOK", price: 350 },
   { name: "JS COOKBOOK", price: 350 },
-  { name: "LARAVEL COOKBOOK", price: 450 },
+  { name: "PHP COOKBOOK", price: 450 },
   { name: "JS COOKBOOK", price: 350 },
 ];
 // JS COOKBOOK: {price: 1400, quantity: 3}
 // total price
 
-const invoiceList = products.reduce((acc, cur)=> {
-  if(acc[cur]){
-    acc[cur].price+=cur.price
-    acc[cur].quantity += cur.quantity
-  }else{
-    acc[cur] = {
-      ...acc[cur],
-      price: cur.price,
-      quantity: 1
-    }
-  }
-  return acc
-})
+const invoiceList = products.reduce((acc, cur) => {
+  // console.log(acc[cur]);
 
-console.log({invoiceList})
+  if (acc[cur.name]) {
+    acc[cur.name].price += cur.price;
+    acc[cur.name].quantity++;
+  } else {
+    acc[cur.name] = {
+      // ...acc[cur],
+      price: cur.price,
+      quantity: 1,
+    };
+  }
+  return acc;
+}, {});
+let totalInvoicePrice = 0;
+for (let key in invoiceList) {
+  totalInvoicePrice += invoiceList[key]?.price;
+}
+
+// console.log({invoiceList, totalInvoicePrice})
 
 //Matrix Sum (Horizontal, vertical, flat sum)
 const matrix = [
@@ -93,13 +102,40 @@ const matrix = [
   [4, 5, 6],
   [7, 8, 9],
 ];
+// horizontal [6 15 24]
+const horizontalSum = matrix.map((item) =>
+  item.reduce((acc, curr) => acc + curr, 0)
+);
+// const verticalSum = matrix.reduce((acc, cur)=> cur.map((item, ind) => acc+=cur[ind]), 0)
+// const verticalSum = matrix.reduce((acc, cur)=> {
+//   return cur.map((item, ind) => {
+//     return acc+=cur[ind]
+//   })
+// }, 0)
+const verticalSum = matrix.map((item, ind) => {
+  return item.reduce((acc, cur) => {
+    return cur;
+  }, 0);
+});
+const flatSum = matrix.map((item) => item.reduce((acc, curr) => acc + curr, 0));
+
+// console.log({matrix,horizontalSum, verticalSum});
 
 //map & filter using reduce
 //maped square
+const mapedReduce = arr.reduce((acc, cur) => {
+  // if(acc){
+  //   // acc.push(cur)
+  // }else {
+  //   acc.push(cur)
+  // }
+}, []);
 
 //filter
 
 //map & filter chain by reduce
+
+// console.log({mapedReduce});
 
 // compose function
 const add10 = (n) => n + 10;
@@ -107,6 +143,7 @@ const times3 = (n) => n * 3;
 const div2 = (n) => n / 2;
 
 // pipe function pipe(add10, times3, div2)(5)
+const pipe = () => {};
 
 // inspect nested object
 const js = {
@@ -156,12 +193,23 @@ const react = {
 };
 const courses = [js, node, react];
 
-//generating markup lists
+//generating markup lists (Done)
 const links = [
   { name: "Facebook", url: "http://facebook.com" },
   { name: "Github", url: "http://github.com" },
   { name: "Linkedin", url: "http://linkedin.com" },
 ];
+
+let template = `<ul>{{links}}</ul>`;
+
+const reducedLinks = () => {
+  return links.reduce((acc, cur) => {
+    acc += `<li><a href='${cur.url}'>${cur.name}</a></li>`;
+    return acc;
+  }, "");
+};
+template = template.replace("{{links}}", reducedLinks());
+// console.log(template);
 
 // grouping similar words (7.15)
 const words = [
@@ -176,7 +224,7 @@ const words = [
   "nine",
   "ten",
 ];
-
+const groupingWords = words.reduce((acc, cur) => {});
 // combining data from from different source
 const courseLists = [
   { id: "oc1", name: "JS 101", topic: "js", price: 500 },
