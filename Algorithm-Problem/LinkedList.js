@@ -96,7 +96,7 @@ class LinkedList {
     const arr = [];
     let currentNode = this.head;
     // console.log( currentNode)
-    while (currentNode.next) {
+    while (currentNode) {
       arr.push(currentNode.value);
       // console.log(currentNode.next, this.length);
       currentNode = currentNode.next;
