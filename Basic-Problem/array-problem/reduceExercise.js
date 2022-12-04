@@ -3,7 +3,7 @@
  */
 
 // Sum & Average  //(DONE)
-const arr = [1, 2, 3, 4, 5];
+const arr = [1, 2, 3, 4, 5, 6];
 const sum = arr.reduce((acc, cur) => acc + cur);
 const average = arr.reduce((acc, cur, index, array) => {
   acc += cur;
@@ -24,10 +24,10 @@ const flatReduce = nestedArr.reduce((acc, cur) => {
 // flatMap(7.5)
 const flatMap = arr.flatMap((x) => [x, x * 2]);
 const flatMapReduce = nestedArr.reduce((acc, cur) => {
-  console.log({acc, cur, item: cur*2});
-  acc.concat(cur)
+  // console.log({acc, cur, item: cur*2});
+  // acc.concat(cur)
 }, []);
-console.log({flatMapReduce, flatMap});
+// console.log({flatMapReduce, flatMap});
 // frequency checker (DONE)
 const votes = ["JAVA", "JS", "PHP", "PHP", "JS", "PHP"];
 // {JS: 2}
@@ -44,23 +44,30 @@ const votesObjCount = votes.reduce((acc, cur) => {
 // implement OWN reduce
 const myReduce = (arr, cb, init) => {
   let acc
-  for(let i =0; i<=arr.length; i++){
+  let start = 0
+  if(!init){
+    acc = arr[0]
+    start = 1
+  }
+  for(let i = start; i<arr.length; i++){
     acc+=cb(arr[i], i, arr)
+    // console.log(acc)
   }
   return acc
 };
-const mySum = myReduce(arr, ())
-console.log(m);
+const mySum = myReduce(arr, (a,b)=> a+b, 1)
+// console.log({mySum});
 
 
-// reduce right flatten
+// reduce right flatten (Done)
 const arr2 = [
   [1, 2],
   [3, 4],
   [5, 6],
 ];
 
-const reduceRightArr = arr2.reduceRight((acc, cur) => {});
+const reduceRightArr = arr2.reduceRight((acc, cur) => acc.concat(cur), []);
+// console.log(reduceRightArr);
 
 //reduce array into single object (DONE)
 const products = [
@@ -106,44 +113,60 @@ const matrix = [
 const horizontalSum = matrix.map((item) =>
   item.reduce((acc, curr) => acc + curr, 0)
 );
-// const verticalSum = matrix.reduce((acc, cur)=> cur.map((item, ind) => acc+=cur[ind]), 0)
+// const verticalSum = matrix.reduce((acc, cur)=> acc.map((item, ind) => acc+=cur[ind]), 0)
 // const verticalSum = matrix.reduce((acc, cur)=> {
-//   return cur.map((item, ind) => {
-//     return acc+=cur[ind]
+//   return acc.map((item, ind) => {
+//     return acc+=cur[item]
 //   })
 // }, 0)
-const verticalSum = matrix.map((item, ind) => {
-  return item.reduce((acc, cur) => {
-    return cur;
-  }, 0);
-});
-const flatSum = matrix.map((item) => item.reduce((acc, curr) => acc + curr, 0));
+// const verticalSum = matrix.map((item, ind) => {
+//   return item.reduce((acc, cur) => {
+//     return cur;
+//   }, 0);
+// });
+// const flatSum = matrix.reduce((a,v) => a.reduce((acc, curr) => acc + curr, 0));
 
-// console.log({matrix,horizontalSum, verticalSum});
+// console.log({matrix,horizontalSum,  flatSum});
 
 //map & filter using reduce
-//maped square
+//maped square (DONE)
 const mapedReduce = arr.reduce((acc, cur) => {
-  // if(acc){
-  //   // acc.push(cur)
-  // }else {
-  //   acc.push(cur)
-  // }
+  if(acc){
+    acc.push(cur*2)
+  }
+  return acc
 }, []);
 
-//filter
+//filter (Done)
+const filteredReduce = arr.reduce((acc, cur)=> {
+  if(cur % 2 == 0){
+    acc.push(cur)
+  }
+  return acc
+}, [])
 
-//map & filter chain by reduce
+//map & filter chain by reduce (Done)
+const mapedFiltered = arr.reduce((acc, cur)=> {
+  if(cur % 2 == 0){
+    acc.push(cur*2)
+  }
+  return acc
+}, [])
 
-// console.log({mapedReduce});
+// console.log({mapedReduce, filteredReduce, mapedFiltered});
 
 // compose function
 const add10 = (n) => n + 10;
 const times3 = (n) => n * 3;
 const div2 = (n) => n / 2;
-
+const n = 5
 // pipe function pipe(add10, times3, div2)(5)
-const pipe = () => {};
+const pipe = (...fns) => {
+  fns.reduce((acc, cur)=> {
+    return acc(cur)
+  }, n)
+};
+// console.log(pipe(add10, times3, div2)(5))
 
 // inspect nested object
 const js = {
@@ -193,6 +216,7 @@ const react = {
 };
 const courses = [js, node, react];
 
+
 //generating markup lists (Done)
 const links = [
   { name: "Facebook", url: "http://facebook.com" },
@@ -211,10 +235,11 @@ const reducedLinks = () => {
 template = template.replace("{{links}}", reducedLinks());
 // console.log(template);
 
-// grouping similar words (7.15)
+// grouping similar words (7.15) (Done)
 const words = [
   "one",
   "two",
+  'mia',
   "three",
   "four",
   "five",
@@ -224,7 +249,16 @@ const words = [
   "nine",
   "ten",
 ];
-const groupingWords = words.reduce((acc, cur) => {});
+const groupingWords = words.reduce((acc, cur) => {
+  const size = cur.length
+  if(acc[size]){
+    acc[size]++
+  }else{
+    acc[size] = 1
+  }
+  return acc
+}, {});
+// console.log(groupingWords)
 // combining data from from different source
 const courseLists = [
   { id: "oc1", name: "JS 101", topic: "js", price: 500 },
@@ -234,6 +268,12 @@ const courseLists = [
   { id: "oc5", name: "MOngo 101", topic: "Nosql", price: 600 },
 ];
 const discountLists = { oc1: 5, oc2: 10, oc3: 7, oc4: 0, oc5: 15 }; //percentage
+
+// oc1:{ id: "oc1", name: "JS 101", topic: "js", price: 500, discount: 25 }
+const discountedCourseLists = courseLists.reduce((acc, cur)=> {
+  // if(acc[cur.id])
+  
+})
 
 //chain promise
 
@@ -253,3 +293,10 @@ const contacts = [
 
 //remove duplicates
 const duplicateArr = ["nishat", "nahid", "nabilla", "nishat", "nahid"];
+const uniqArr = duplicateArr.reduce((acc, cur)=> {
+  if(!acc.includes(cur)){
+    acc.push(cur)
+  }
+  return acc.includes(cur)
+}, [])
+console.log(uniqArr)
