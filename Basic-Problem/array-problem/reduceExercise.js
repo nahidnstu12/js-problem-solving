@@ -271,9 +271,11 @@ const discountLists = { oc1: 5, oc2: 10, oc3: 7, oc4: 0, oc5: 15 }; //percentage
 
 // oc1:{ id: "oc1", name: "JS 101", topic: "js", price: 500, discount: 25 }
 const discountedCourseLists = courseLists.reduce((acc, cur)=> {
-  // if(acc[cur.id])
+  // if(acc[cur.id]){
+
+  // }
   
-})
+}, {})
 
 //chain promise
 
@@ -286,17 +288,24 @@ const contacts = [
   { name: "awe", phone: "12312356" },
   { name: "res", phone: "12312356" },
   { name: "xxx", phone: "12312356" },
-  { name: "asq", phone: "12312356" },
+  { name: "atq", phone: "12312356" },
   { name: "rre", phone: "12312356" },
   { name: "xsw", phone: "12312356" },
 ];
+/* output 
+   A (4)
+   ASD - 12312356
+   ATK - 12312356
+   R (1)
+   RTY - 12312356
+*/
 
-//remove duplicates
+//remove duplicates(Done)
 const duplicateArr = ["nishat", "nahid", "nabilla", "nishat", "nahid"];
 const uniqArr = duplicateArr.reduce((acc, cur)=> {
   if(!acc.includes(cur)){
     acc.push(cur)
   }
-  return acc.includes(cur)
+  return acc
 }, [])
 console.log(uniqArr)
