@@ -19,5 +19,8 @@
   "homepage": "https://github.com/nahidnstu12/js-problem-solving#readme",
   "dependencies": {
     "axios": "^0.26.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.4"
   }
 }
